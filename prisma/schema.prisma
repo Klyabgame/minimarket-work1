@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model tb_auth {
+  id_auth         String     @id @db.VarChar(36)
+  correo          String     @db.VarChar(35)
+  correo_validado Boolean   @default(false)
+  password        String     @db.VarChar(255)
+  foto_url        String?    @db.VarChar(255)
+  nombres         String     @db.VarChar(35)
+  apellidos       String     @db.VarChar(45)
+  telefono        String?    @db.VarChar(10)
+  tb_venta        tb_venta[]
+}
+
+model tb_marca {
+  id_marca     String       @id @db.VarChar(36)
+  nombre_marca String       @db.VarChar(20)
+  tb_product   tb_product[]
+}
+
+model tb_product {
+  id_product         String             @id @db.VarChar(36)
+  product_url           String?    @db.VarChar(255)
+  descripcion        String?            @db.VarChar(255)
+  stock              Int
+  precio_compra_unit Decimal            @db.Decimal(10, 3)
+  precio_venta_unit  Decimal            @db.Decimal(10, 3)
+  id_marca           String             @db.VarChar(36)
+  id_tipo_product    String             @db.VarChar(36)
+  tb_marca           tb_marca           @relation(fields: [id_marca], references: [id_marca], onDelete: NoAction, onUpdate: NoAction, map: "tb_product_ibfk_1")
+  tb_tipo_product    tb_tipo_product    @relation(fields: [id_tipo_product], references: [id_tipo_product], onDelete: NoAction, onUpdate: NoAction, map: "tb_product_ibfk_2")
+  tb_venta_detalle   tb_venta_detalle[]
+
+  @@index([id_marca], map: "id_marca")
+  @@index([id_tipo_product], map: "id_tipo_product")
+}
+
+model tb_tipo_comprobante {
+  id_tipo_comprobante     String     @id @db.VarChar(36)
+  nombre_tipo_comprobante String     @db.VarChar(25)
+  tb_venta                tb_venta[]
+}
+
+model tb_tipo_product {
+  id_tipo_product     String       @id @db.VarChar(36)
+  nombre_tipo_product String       @db.VarChar(25)
+  tb_product          tb_product[]
+}
+
+model tb_venta {
+  id_venta            String              @id @db.VarChar(36)
+  total_venta         Decimal             @db.Decimal(10, 3)
+  fecha_venta         DateTime            @db.DateTime(0)
+  id_auth             String              @db.VarChar(36)
+  id_tipo_comprobante String              @db.VarChar(36)
+  tb_auth             tb_auth             @relation(fields: [id_auth], references: [id_auth], onDelete: NoAction, onUpdate: NoAction, map: "tb_venta_ibfk_1")
+  tb_tipo_comprobante tb_tipo_comprobante @relation(fields: [id_tipo_comprobante], references: [id_tipo_comprobante], onDelete: NoAction, onUpdate: NoAction, map: "tb_venta_ibfk_2")
+  tb_venta_detalle    tb_venta_detalle[]
+
+  @@index([id_auth], map: "id_auth")
+  @@index([id_tipo_comprobante], map: "id_tipo_comprobante")
+}
+
+model tb_venta_detalle {
+  id_venta_detalle  String     @id @db.VarChar(36)
+  cantidad          Int
+  id_product        String     @db.VarChar(36)
+  id_venta          String     @db.VarChar(36)
+  precio_venta_unit Decimal    @db.Decimal(10, 3)
+  total             Decimal    @db.Decimal(10, 3)
+  tb_product        tb_product @relation(fields: [id_product], references: [id_product], onDelete: NoAction, onUpdate: NoAction, map: "tb_venta_detalle_ibfk_1")
+  tb_venta          tb_venta   @relation(fields: [id_venta], references: [id_venta], onDelete: NoAction, onUpdate: NoAction, map: "tb_venta_detalle_ibfk_2")
+
+  @@index([id_product], map: "id_product")
+  @@index([id_venta], map: "id_venta")
+}

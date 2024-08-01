@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  db:
+    container_name: mysql_db
+    image: mysql:9.0.1-oracle
+    volumes:
+      - ./mysql-db:/var/lib/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+  
+  phpMyAdmin:
+    depends_on:
+      - db
+    image: phpmyadmin:5.2.1
+    ports:
+      - "8080:80"
+    volumes:
+      - ./phpMyadmin:/var/www/html
+    environment:
+      - PMA_PASSWORD=123456
+      - PMA_USER=franztest@gmail.com
+volumes:
+    mysql-db:
+      external: true
+    phpMyadmin:
+      external: true  
+    
