@@ -3,8 +3,11 @@ import { TipoProductEntity } from "../entitys/tipoProduct.entity";
 
 export abstract class TipoProductRepository{
 
+    abstract getTipoProductAll():Promise<TipoProductEntity[]>;
+    abstract getTipoProductOne(id:string):Promise<TipoProductEntity>;
     abstract postRegisterTipoProduct(createTipoProductDto:CreateTipoProductDto):Promise<TipoProductEntity>;
     abstract putTipoProduct(updateTipoProductDto:UpdateTipoProductDto):Promise<TipoProductEntity>;
+    abstract deleteTipoProduct(id:string):Promise<TipoProductEntity>;
   
   
   }

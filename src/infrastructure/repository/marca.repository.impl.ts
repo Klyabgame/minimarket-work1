@@ -11,17 +11,17 @@ export class MarcaRepositoryImpl implements MarcaRepository{
         return this.marcaDatasource.getMarcaAll();
     }
     getMarcaOne(id: string): Promise<MarcaEntity> {
-        throw new Error("Method not implemented.");
+        return this.marcaDatasource.getMarcaOne(id);
     }
     
     postRegisterMarca(createMarcaDto: CreateMarcaDto): Promise<MarcaEntity> {
         return this.marcaDatasource.postRegisterMarca(createMarcaDto);
     }
     putMarca(updateMarcaDto: UpdateMarcaDto): Promise<MarcaEntity> {
-        throw new Error("Method not implemented.");
+        return this.marcaDatasource.putMarca(updateMarcaDto);
     }
     
     deleteMarca(id: string): Promise<MarcaEntity> {
-        throw new Error("Method not implemented.");
+        return this.marcaDatasource.deleteMarca(id);
     }
 }

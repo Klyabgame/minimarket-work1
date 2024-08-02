@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { CreateMarcaDto, CustomError, MarcaRepository} from "../../domain";
+import { CreateMarcaDto, CustomError, MarcaRepository, UpdateMarcaDto} from "../../domain";
 import { UUID } from "../../config";
-import { CreateMarca } from "../../domain/use-cases/marca";
-import { GetMarcaAll } from "../../domain/use-cases/marca/get-marca-all";
+import { CreateMarca, DeleteMarca, GetMarcaAll, GetMarcaOne, UpdateMarca } from "../../domain/use-cases/marca";
 
 
 
@@ -40,14 +39,24 @@ export class MarcaController {
         new GetMarcaAll(this.marcaRepository)
         .execute()
         .then(data=>
-            res.status(200).json({marcas:data})
-        )   
+            res.status(200).json({marcas:data}))
+        .catch(error => this.handleError(error,res));   
 
     }
 
     public getMarcaOne(req:Request, res:Response){
-
-        res.json("getPmarcactone");
+        const idMarca=req.params.id;
+        
+        new GetMarcaOne(this.marcaRepository)
+        .execute(idMarca)
+        .then(data=>
+        {
+            return res.status(200).json({oneMarca:data})
+        }
+        )
+        .catch(error => {
+            return this.handleError(error,res)
+        }); 
     }
 
 
@@ -60,27 +69,38 @@ export class MarcaController {
 
         new CreateMarca(this.marcaRepository)
         .execute(createMarcaDto!)
-        .then(data=>
-            
-        )
-        
-
-        
-
-        res.json("registermarcaductAll");
+        .then(data=> res.status(200).json({newMarca:data}))
+        .catch(error => this.handleError(error,res));
         
     }
 
     public updateMarca(req:Request, res:Response){
+        const idMarca=req.params.id;
+        const [error,updateMarcaDTO]= UpdateMarcaDto.create({
+            ...req.body,
+            id_marca:idMarca
+        });
 
-        res.json("updatePmarcauctAll");
+        new UpdateMarca(this.marcaRepository)
+        .execute(updateMarcaDTO!)
+        .then(data=>
+            res.status(200).json({updateMarca:data})
+        )
+        .catch(error => this.handleError(error,res));
         
     }
 
     public deleteMarca(req:Request, res:Response){
-        res.json("deletePmarcauctAll");
 
-        
+        const idMarca=req.params.id;
+
+        new DeleteMarca(this.marcaRepository)
+        .execute(idMarca)
+        .then(data=>
+            res.status(200).json({deleteMarca:data})
+        )
+        .catch(error => this.handleError(error,res));
+
     }
 
 
