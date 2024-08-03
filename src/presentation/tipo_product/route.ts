@@ -1,5 +1,7 @@
 import { Router } from "express"
 import { TipoProductController } from "./controller";
+import { TipoProductRepositoryImpl } from "../../infrastructure/repository";
+import { TipoProductDatasourceImpl } from "../../infrastructure/datasource";
 
 export class TipoProductRoutes{
 
@@ -9,7 +11,9 @@ export class TipoProductRoutes{
         const router=Router();
 
 
-        const tipoProductController=new TipoProductController();
+        const tipoProductDatasource=new TipoProductDatasourceImpl();
+        const tipoProductRepository=new TipoProductRepositoryImpl(tipoProductDatasource);
+        const tipoProductController=new TipoProductController(tipoProductRepository);
 
         router.get('/',tipoProductController.getTipoProductAll);
         router.get('/:id',tipoProductController.getTipoProductOne);

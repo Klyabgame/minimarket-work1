@@ -9,19 +9,19 @@ export class TipoProductRepositoryImpl implements TipoProductRepository{
     ) {}
 
     getTipoProductAll(): Promise<TipoProductEntity[]> {
-        throw new Error("Method not implemented.");
+        return this.tipoProductDatasource.getTipoProductAll();
     }
     getTipoProductOne(id: string): Promise<TipoProductEntity> {
-        throw new Error("Method not implemented.");
+        return this.tipoProductDatasource.getTipoProductOne(id);
     }
     deleteTipoProduct(id: string): Promise<TipoProductEntity> {
-        throw new Error("Method not implemented.");
+        return this.tipoProductDatasource.deleteTipoProduct(id);
     }
     postRegisterTipoProduct(createTipoProductDto: CreateTipoProductDto): Promise<TipoProductEntity> {
-        throw new Error("Method not implemented.");
+        return this.tipoProductDatasource.postRegisterTipoProduct(createTipoProductDto);
     }
     putTipoProduct(updateTipoProductDto: UpdateTipoProductDto): Promise<TipoProductEntity> {
-        throw new Error("Method not implemented.");
+        return this.tipoProductDatasource.putTipoProduct(updateTipoProductDto);
     }
 
 

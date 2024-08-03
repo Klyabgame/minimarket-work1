@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import { CustomError} from "../../domain";
+import { CreateTipoProductDto, CustomError, TipoProductRepository, UpdateTipoProductDto} from "../../domain";
+import { CreateTipoProduct, DeleteTipoProduct, GetAllTipoProduct, GetOneTipoProduct, UpdateTipoProduct } from "../../domain/use-cases/tipo_product";
 
 
 
 export class TipoProductController {
 
     constructor(
-
+        private readonly tipoProductRepository:TipoProductRepository,
     ){
 
         this.handleError=this.handleError.bind(this);
@@ -32,32 +33,58 @@ export class TipoProductController {
 
     public getTipoProductAll(req:Request, res:Response){
 
-        res.json("getPrtipoPRoductotAll");
+        new GetAllTipoProduct(this.tipoProductRepository)
+        .execute()
+        .then(data=>console.log(data))
+        .catch(error=> this.handleError(error,res));
 
     }
 
     public getTipoProductOne(req:Request, res:Response){
 
-        res.json("getPrtipoPRoductotone");
+        const idTipoProduct=req.params.id;
+
+        new GetOneTipoProduct(this.tipoProductRepository)
+        .execute(idTipoProduct)
+        .then(data=>console.log(data))
+        .catch(error=> this.handleError(error,res));
     }
 
 
     public registerTipoProduct(req:Request, res:Response){
 
-        res.json("registertipoPRoductouctAll");
+        const [error,createTipoProductDTO]= CreateTipoProductDto.create(req.body)
+
+        new CreateTipoProduct(this.tipoProductRepository)
+        .execute(createTipoProductDTO!)
+        .then(data=>console.log(data))
+        .catch(error=> this.handleError(error,res));
         
     }
 
     public updateTipoProduct(req:Request, res:Response){
+        const idTipoProduct=req.params.id;
+        const [error,updateTipoProductDTO]=UpdateTipoProductDto.create({
+            ...req.body,
+            id_tipo_product:idTipoProduct
+        })
 
-        res.json("updattipoPRoductoductAll");
+        new UpdateTipoProduct(this.tipoProductRepository)
+        .execute(updateTipoProductDTO!)
+        .then(data=>console.log(data))
+        .catch(error=> this.handleError(error,res));
         
     }
 
     public deleteTipoProduct(req:Request, res:Response){
-        res.json("deletetipoPRoductouctAll");
 
-        
+        const idTipoProduct=req.params.id;
+
+        new DeleteTipoProduct(this.tipoProductRepository)
+        .execute(idTipoProduct)
+        .then(data=>console.log(data))
+        .catch(error=> this.handleError(error,res));
+
     }
 
 
