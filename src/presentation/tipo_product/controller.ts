@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { CreateTipoProductDto, CustomError, TipoProductRepository, UpdateTipoProductDto} from "../../domain";
 import { CreateTipoProduct, DeleteTipoProduct, GetAllTipoProduct, GetOneTipoProduct, UpdateTipoProduct } from "../../domain/use-cases/tipo_product";
+import { UUID } from "../../config";
 
 
 
@@ -35,7 +36,7 @@ export class TipoProductController {
 
         new GetAllTipoProduct(this.tipoProductRepository)
         .execute()
-        .then(data=>console.log(data))
+        .then(data=>res.status(200).json({tipoProductAll:data}))
         .catch(error=> this.handleError(error,res));
 
     }
@@ -46,18 +47,21 @@ export class TipoProductController {
 
         new GetOneTipoProduct(this.tipoProductRepository)
         .execute(idTipoProduct)
-        .then(data=>console.log(data))
+        .then(data=>res.status(200).json({tipoProductOne:data}))
         .catch(error=> this.handleError(error,res));
     }
 
 
     public registerTipoProduct(req:Request, res:Response){
 
-        const [error,createTipoProductDTO]= CreateTipoProductDto.create(req.body)
+        const [error,createTipoProductDTO]= CreateTipoProductDto.create({
+            ...req.body,
+            id_tipo_product:UUID()
+        })
 
         new CreateTipoProduct(this.tipoProductRepository)
         .execute(createTipoProductDTO!)
-        .then(data=>console.log(data))
+        .then(data=>res.status(200).json({TipoProductRegistrado:data}))
         .catch(error=> this.handleError(error,res));
         
     }
@@ -71,7 +75,7 @@ export class TipoProductController {
 
         new UpdateTipoProduct(this.tipoProductRepository)
         .execute(updateTipoProductDTO!)
-        .then(data=>console.log(data))
+        .then(data=>res.status(200).json({tipoProductUpdate:data}))
         .catch(error=> this.handleError(error,res));
         
     }
@@ -82,7 +86,7 @@ export class TipoProductController {
 
         new DeleteTipoProduct(this.tipoProductRepository)
         .execute(idTipoProduct)
-        .then(data=>console.log(data))
+        .then(data=>res.status(200).json({tipoProductDelete:data}))
         .catch(error=> this.handleError(error,res));
 
     }

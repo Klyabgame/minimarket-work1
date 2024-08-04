@@ -1,11 +1,14 @@
 import { Request, Response } from "express";
-import { CustomError} from "../../domain";
+import { CreateProductDto, CustomError, ProductRepository, UpdateProductDto} from "../../domain";
+import { UUID } from "../../config";
+import { CreateProduct, DeleteProduct, GetProductAll, GetProductOne, UpdateProduct } from "../../domain/use-cases/product";
 
 
 
 export class ProductController {
 
     constructor(
+        private readonly productRepository:ProductRepository,
 
     ){
 
@@ -32,34 +35,63 @@ export class ProductController {
 
     public getProductAll(req:Request, res:Response){
 
-        res.json("getProductAll");
+        new GetProductAll(this.productRepository)
+        .execute()
+        .then(data=>res.status(200).json({productAll:data}))
+        .catch(error=>this.handleError(error,res));
 
     }
 
     public getProductOne(req:Request, res:Response){
+        const idProduct=req.params.id;
 
-        res.json("getProductone");
+        new GetProductOne(this.productRepository)
+        .execute(idProduct)
+        .then(data=>res.status(200).json({productOne:data}))
+        .catch(error=>this.handleError(error,res));
     }
 
 
     public registerProduct(req:Request, res:Response){
 
-        res.json("registerProductAll");
+        const [error,createProductDto]= CreateProductDto.create({
+            ...req.body,
+            id_product:UUID()
+        });
+
+        new CreateProduct(this.productRepository)
+        .execute(createProductDto!)
+        .then(data=>res.status(200).json({productRegister:data}))
+        .catch(error=>this.handleError(error,res));
+        
+        
         
     }
 
     public updateProduct(req:Request, res:Response){
 
-        res.json("updateProductAll");
+        const idProduct= req.params.id;
+        const [error,updateProductDTO]=UpdateProductDto.create({
+            ...req.body,
+            id_product:idProduct
+        })
+
+        new UpdateProduct(this.productRepository)
+        .execute(updateProductDTO!)
+        .then(data=>res.status(200).json({productUpdate:data}))
+        .catch(error=>this.handleError(error,res));
         
     }
 
     public deleteProduct(req:Request, res:Response){
-        res.json("deleteProductAll");
+        const idProduct= req.params.id;
+
+        new DeleteProduct(this.productRepository)
+        .execute(idProduct)
+        .then(data=>res.status(200).json({productDelete:data}))
+        .catch(error=>this.handleError(error,res));
 
         
     }
-
-
     
 }
