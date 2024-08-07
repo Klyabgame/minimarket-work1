@@ -1,7 +1,7 @@
 import { Router } from "express"
-import { VentaController } from "./controller";
-import { VentaRepositoryImpl } from "../../infrastructure/repository";
-import { VentaDatasourceImpl } from "../../infrastructure/datasource";
+import { VentaDetalleController } from "./controller";
+import { VentaDetalleRepositoryImpl,  } from "../../infrastructure/repository";
+import { VentaDetalleDatasourceImpl } from "../../infrastructure/datasource";
 
 export class VentaDetalleRoutes{
 
@@ -11,18 +11,18 @@ export class VentaDetalleRoutes{
         const router=Router();
 
 
-        const VentaDatasource=new VentaDatasourceImpl();
-        const ventaRepository=new VentaRepositoryImpl(VentaDatasource);
-        const ventaController=new VentaController(ventaRepository);
+        const VentaDetalleDatasource=new VentaDetalleDatasourceImpl();
+        const ventaDetalleRepository=new VentaDetalleRepositoryImpl(VentaDetalleDatasource);
+        const ventaDetalleController=new VentaDetalleController(ventaDetalleRepository);
 
-        router.get('/',ventaController.getVentaAll);
-        router.get('/:id',ventaController.getVentaOne);
+        router.get('/',ventaDetalleController.getVentaDetalleAll);
+        router.get('/:id',ventaDetalleController.getVentaDetalleOne);
 
-        router.post('/register',ventaController.registerVenta);
+        router.post('/register',ventaDetalleController.registerVentaDetalle);
         //router.get('/:dni',AuthController.getEmployeesOne);
-        router.put('/:id',ventaController.updateVenta);
+        router.put('/:id',ventaDetalleController.updateVentaDetalle);
 
-        router.delete('/:id',ventaController.deleteVenta);
+        router.delete('/:id',ventaDetalleController.deleteVentaDetalle);
 
 
         return router;

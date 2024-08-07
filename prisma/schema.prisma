@@ -56,7 +56,7 @@ model tb_tipo_product {
 
 model tb_venta {
   id_venta            String              @id @db.VarChar(36)
-  total_venta         Decimal             @db.Decimal(10, 3)
+  total_venta         Decimal?             @db.Decimal(10, 3)
   fecha_venta         DateTime            @db.DateTime(0)
   id_auth             String              @db.VarChar(36)
   id_tipo_comprobante String              @db.VarChar(36)

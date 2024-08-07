@@ -1,24 +1,24 @@
 import { Request, Response } from "express";
-import { CustomError, VentaRepository} from "../../domain";
+import { CustomError, VentaDetalleRepository} from "../../domain";
 import { UUID } from "../../config";
-import { CreateVenta, DeleteVenta, GetVentaAll, GetVentaOne, UpdateVenta } from "../../domain/use-cases/venta";
-import { CreateVentaDto, UpdateVentaDto } from "../../domain/dtos/venta";
+import { CreateVentaDetalle, DeleteVentaDetalle, GetVentaDetalleAll, GetVentaDetalleOne, UpdateVentaDetalle } from "../../domain/use-cases/venta_detalle";
+import { CreateVentaDetalleDto, UpdateVentaDetalleDto } from "../../domain/dtos/venta_detallle";
 
 
 
-export class VentaController {
+export class VentaDetalleController {
 
     constructor(
-        private readonly ventaRepository:VentaRepository,
+        private readonly ventaDetalleRepository:VentaDetalleRepository,
     ){
 
         this.handleError=this.handleError.bind(this);
 
-        this.getVentaAll=this.getVentaAll.bind(this);
-        this.getVentaOne=this.getVentaOne.bind(this);
-        this.registerVenta=this.registerVenta.bind(this);
-        this.updateVenta=this.updateVenta.bind(this);
-        this.deleteVenta=this.deleteVenta.bind(this);
+        this.getVentaDetalleAll=this.getVentaDetalleAll.bind(this);
+        this.getVentaDetalleOne=this.getVentaDetalleOne.bind(this);
+        this.registerVentaDetalle=this.registerVentaDetalle.bind(this);
+        this.updateVentaDetalle=this.updateVentaDetalle.bind(this);
+        this.deleteVentaDetalle=this.deleteVentaDetalle.bind(this);
 
         
     }
@@ -33,62 +33,62 @@ export class VentaController {
         
     }
 
-    public getVentaAll(req:Request, res:Response){
+    public getVentaDetalleAll(req:Request, res:Response){
 
-        new GetVentaAll(this.ventaRepository)
+        new GetVentaDetalleAll(this.ventaDetalleRepository)
         .execute()
-        .then(data=>res.status(200).json({VentaAll:data}))
+        .then(data=>res.status(200).json({VentaDetalleAll:data}))
         .catch(error=> this.handleError(error,res));
 
     }
 
-    public getVentaOne(req:Request, res:Response){
+    public getVentaDetalleOne(req:Request, res:Response){
 
-        const idVenta=req.params.id;
+        const idVentaDetalle=req.params.id;
 
-        new GetVentaOne(this.ventaRepository)
-        .execute(idVenta)
-        .then(data=>res.status(200).json({ventaOne:data}))
+        new GetVentaDetalleOne(this.ventaDetalleRepository)
+        .execute(idVentaDetalle)
+        .then(data=>res.status(200).json({ventaDetalleOne:data}))
         .catch(error=> this.handleError(error,res));
     }
 
 
-    public registerVenta(req:Request, res:Response){
+    public registerVentaDetalle(req:Request, res:Response){
 
-        const [error,createVentaDto]= CreateVentaDto.create({
+        const [error,createVentaDetalleDto]= CreateVentaDetalleDto.create({
             ...req.body,
-            id_venta:UUID()
+            id_venta_detalle:UUID()
         })
 
-        new CreateVenta(this.ventaRepository)
-        .execute(createVentaDto!)
-        .then(data=>res.status(200).json({VentaRegistrado:data}))
+        new CreateVentaDetalle(this.ventaDetalleRepository)
+        .execute(createVentaDetalleDto!)
+        .then(data=>res.status(200).json({VentaDetalleRegistrado:data}))
         .catch(error=> this.handleError(error,res));
         
     }
 
-    public updateVenta(req:Request, res:Response){
+    public updateVentaDetalle(req:Request, res:Response){
 
-        const idVenta=req.params.id;
-        const [error,updateVentaDto]=UpdateVentaDto.create({
+        const idVentaDetalle=req.params.id;
+        const [error,updateVentaDetalleDto]=UpdateVentaDetalleDto.create({
             ...req.body,
-            id_venta:idVenta
+            id_venta_detalle:idVentaDetalle
         })
 
-        new UpdateVenta(this.ventaRepository)
-        .execute(updateVentaDto!)
-        .then(data=>res.status(200).json({ventaUpdate:data}))
+        new UpdateVentaDetalle(this.ventaDetalleRepository)
+        .execute(updateVentaDetalleDto!)
+        .then(data=>res.status(200).json({ventaDetalleUpdate:data}))
         .catch(error=> this.handleError(error,res));
         
     }
 
-    public deleteVenta(req:Request, res:Response){
+    public deleteVentaDetalle(req:Request, res:Response){
 
-        const idVenta=req.params.id;
+        const idVentaDetalle=req.params.id;
 
-        new DeleteVenta(this.ventaRepository)
-        .execute(idVenta)
-        .then(data=>res.status(200).json({ventaDelete:data}))
+        new DeleteVentaDetalle(this.ventaDetalleRepository)
+        .execute(idVentaDetalle)
+        .then(data=>res.status(200).json({ventaDetalleDelete:data}))
         .catch(error=> this.handleError(error,res));
 
     }

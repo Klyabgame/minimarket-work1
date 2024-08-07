@@ -4,6 +4,8 @@ import { ProductRoutes } from "./products/route";
 import { TipoProductRoutes } from "./tipo_product/route";
 import { MarcaRoutes } from "./marca/route";
 import { VentaRoutes } from "./venta/route";
+import { VentaDetalleRoutes } from "./venta_detalle/route";
+import { TipoComprobanteRoutes } from "./tipo_comprobante/route";
 
 export class MainRoutes{
 
@@ -18,6 +20,7 @@ export class MainRoutes{
         router.use('/api/tipo-product',TipoProductRoutes.routes);
         router.use('/api/venta',VentaRoutes.routes);
         router.use('/api/venta-detalle',VentaDetalleRoutes.routes);
+        router.use('/api/tipo-comprobante',TipoComprobanteRoutes.routes);
 
         return router;
     }
