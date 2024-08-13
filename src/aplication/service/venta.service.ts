@@ -1,4 +1,4 @@
-import { UUID, prisma } from '../../config';
+/* import { UUID, prisma } from '../../config';
 import { CreateVentaDto } from '../../domain/dtos/venta';
 import { CreateVentaDetalleDto } from '../../domain/dtos/venta_detallle';
 import { VentaDetalleEntity } from '../../domain/entitys/venta-detalle.entity';
@@ -12,7 +12,7 @@ export class VentaService {
       const ventaCreada = await prisma.tb_venta.create({
         data: {
           id_venta:UUID(),
-          total_venta: ,
+          total_venta: 0,
           fecha_venta: new Date(),
           id_auth: 'bfd465b3-f869-4097-bfb7-958babaaf85d',
           id_tipo_comprobante: 'bfd465b3-f869-4097-bfb7-958babaaf85d',
@@ -22,7 +22,7 @@ export class VentaService {
       // Crear los detalles de la venta
       const detalles = carrito.map((item) => ({
         id_venta_detalle:UUID(),
-        cantidad: item.cantidad,
+        cantidad: 8,
         id_product: item.id_product,
         id_venta: ventaCreada.id_venta,
         precio_venta_unit: item.precio_venta_unit,
@@ -46,3 +46,4 @@ export class VentaService {
     });
   }
 }
+ */
