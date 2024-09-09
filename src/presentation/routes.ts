@@ -6,6 +6,7 @@ import { MarcaRoutes } from "./marca/route";
 import { VentaRoutes } from "./venta/route";
 import { VentaDetalleRoutes } from "./venta_detalle/route";
 import { TipoComprobanteRoutes } from "./tipo_comprobante/route";
+import { ReportRoutes } from "./reporte/route";
 
 export class MainRoutes{
 
@@ -21,7 +22,7 @@ export class MainRoutes{
         router.use('/api/venta',VentaRoutes.routes);
         router.use('/api/venta-detalle',VentaDetalleRoutes.routes);
         router.use('/api/tipo-comprobante',TipoComprobanteRoutes.routes);
-
+        router.use('/api/reports',ReportRoutes.routes);
         return router;
     }
 }

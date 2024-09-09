@@ -1,30 +1,16 @@
-/* import PdfPrinter from 'pdfmake';
-import fs from 'fs';
-const fonts = {
-    Roboto: {
-    normal: 'fonts/Roboto-Regular.ttf',
-    bold: 'fonts/Roboto-Medium.ttf',
-    italics: 'fonts/Roboto-Italic.ttf',
-    bolditalics: 'fonts/Roboto-MediumItalic.ttf'
-    }
-};
+import PdfPrinter from 'pdfmake';
+import type{ TDocumentDefinitions } from 'pdfmake/interfaces';
+import { PrinterInterface } from '../interface/printerInterface';
+
 
 export class ReporteService {
 
-    constructor(){}
+  constructor(
+    private readonly printerInterface:PrinterInterface
+  ){}
 
-  const printer = new PdfPrinter(fonts);
-  
-  const docDefinition = {
-    // ...
-  };
-  const options = {
-    // ...
+  createReport(docDefinition: TDocumentDefinitions):PDFKit.PDFDocument{
+      return this.printerInterface.createPdf(docDefinition);
   }
-  
-  const pdfDoc = printer.createPdfKitDocument(docDefinition, options);
-  pdfDoc.pipe(fs.createWriteStream('document.pdf'));
-  pdfDoc.end();
-  
 
-} */
+}
